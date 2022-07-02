@@ -1,3 +1,8 @@
+/*
+*TODO remove suppress when this issue will be solved
+*  https://youtrack.jetbrains.com/issue/KTIJ-19369
+*/
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     kotlin("multiplatform")
     id("com.android.library")

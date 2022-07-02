@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    alias { libs.plugins.ksp }
 }
 
 kotlin {
@@ -17,15 +18,38 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting
+        /**
+         * common
+         * */
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.koin.core)
+                implementation(libs.bundles.ktor)
+            }
+        }
+
         val commonTest by getting {
             dependencies {
                 dependsOn(commonMain)
-                implementation(kotlin("test"))
+                implementation(libs.koin.test)
             }
         }
-        val androidMain by getting
+
+        /**
+         * Android
+         * */
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.okhttp)
+                implementation(libs.koin.android)
+                implementation(libs.koin.core)
+            }
+        }
         val androidTest by getting
+
+        /**
+         * IOS
+         * */
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
@@ -34,7 +58,12 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+
+            dependencies {
+                implementation(libs.ktor.client.ios)
+            }
         }
+
         val iosX64Test by getting
         val iosArm64Test by getting
         val iosSimulatorArm64Test by getting
@@ -55,6 +84,7 @@ android {
         targetSdk = 32
     }
 }
+
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     testImplementation("org.testng:testng:7.3.0")

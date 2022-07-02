@@ -5,8 +5,11 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     kotlin("multiplatform")
-    id("com.android.library")
     alias { libs.plugins.ksp }
+    id("com.android.library")
+    id("com.squareup.sqldelight")
+    // TODO: uncommented when created google-services.json
+//    id("com.google.gms.google-services")
 }
 
 kotlin {
@@ -22,9 +25,13 @@ kotlin {
         }
     }
 
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
     sourceSets {
         /**
-         * common
+         * Common
          * */
         val commonMain by getting {
             dependencies {
@@ -36,7 +43,6 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 dependsOn(commonMain)
-                implementation(libs.koin.test)
             }
         }
 
@@ -48,6 +54,9 @@ kotlin {
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.koin.android)
                 implementation(libs.koin.core)
+                implementation(libs.sqldelight.android)
+                implementation(libs.firebase.bom)
+                implementation(libs.firebase.analytics)
             }
         }
         val androidTest by getting
@@ -66,6 +75,7 @@ kotlin {
 
             dependencies {
                 implementation(libs.ktor.client.ios)
+                implementation(libs.sqldelight.ios)
             }
         }
 
@@ -90,7 +100,14 @@ android {
     }
 }
 
+the<com.squareup.sqldelight.gradle.SqlDelightExtension>().database(name = "sqldelight") {
+    name = "Database"
+    packageName = "com.hexagonteam.itinterview"
+}
+
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testImplementation("org.testng:testng:7.3.0")
+    testImplementation(libs.koin.test)
+    testImplementation(libs.bundles.kotest)
+    testImplementation(libs.junit5)
+    testImplementation(libs.testing)
 }

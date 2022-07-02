@@ -17,12 +17,17 @@ android {
             isMinifyEnabled = false
         }
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.2.0"
+    }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
     implementation(project(":shared"))
 
     implementation(libs.bundles.compose)
-
     implementation(libs.androidx.appcompat)
 }

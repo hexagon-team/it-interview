@@ -37,6 +37,9 @@ kotlin {
             dependencies {
                 implementation(libs.koin.core)
                 implementation(libs.bundles.ktor)
+                implementation(libs.sqldelight.runtime)
+                api(libs.kotlinx.coroutines.core)
+                api(libs.napier.logger)
             }
         }
 
@@ -54,6 +57,7 @@ kotlin {
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.koin.android)
                 implementation(libs.koin.core)
+                implementation(libs.kotlinx.coroutines.android)
                 implementation(libs.sqldelight.android)
                 implementation(libs.firebase.bom)
                 implementation(libs.firebase.analytics)
@@ -100,9 +104,11 @@ android {
     }
 }
 
-the<com.squareup.sqldelight.gradle.SqlDelightExtension>().database(name = "sqldelight") {
-    name = "Database"
-    packageName = "com.hexagonteam.itinterview"
+sqldelight {
+    database("ItInterviewDatabase") {
+        packageName = "com.hexagonteam.itinterview"
+        sourceFolders = listOf("database")
+    }
 }
 
 dependencies {

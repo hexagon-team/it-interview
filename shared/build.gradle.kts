@@ -4,110 +4,118 @@
 */
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    kotlin("multiplatform")
-    alias { libs.plugins.ksp }
-    id("com.android.library")
-    id("com.squareup.sqldelight")
-    // TODO: uncommented when created google-services.json
+  kotlin("multiplatform")
+  alias { libs.plugins.ksp }
+  id("com.android.library")
+  id("com.squareup.sqldelight")
+  // TODO: uncommented when created google-services.json
+  //  https://github.com/hexagon-team/it-interview/issues/6
 //    id("com.google.gms.google-services")
 }
 
+// TODO: replace to BuildSrc files
 kotlin {
-    android()
-    
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "shared"
-        }
+  android()
+
+  listOf(
+    iosX64(),
+    iosArm64(),
+    iosSimulatorArm64()
+  ).forEach {
+    it.binaries.framework {
+      baseName = "shared"
+    }
+  }
+
+  tasks.withType<Test> {
+    useJUnitPlatform()
+  }
+
+  sourceSets {
+    /**
+     * Common
+     * */
+    val commonMain by getting {
+      dependencies {
+        implementation(libs.koin.core)
+        implementation(libs.bundles.ktor)
+        implementation(libs.sqldelight.runtime)
+        api(libs.kotlinx.coroutines.core)
+        api(libs.napier.logger)
+      }
     }
 
-    tasks.withType<Test> {
-        useJUnitPlatform()
+    val commonTest by getting {
+      dependencies {
+        dependsOn(commonMain)
+      }
     }
 
-    sourceSets {
-        /**
-         * Common
-         * */
-        val commonMain by getting {
-            dependencies {
-                implementation(libs.koin.core)
-                implementation(libs.bundles.ktor)
-            }
-        }
-
-        val commonTest by getting {
-            dependencies {
-                dependsOn(commonMain)
-            }
-        }
-
-        /**
-         * Android
-         * */
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.ktor.client.okhttp)
-                implementation(libs.koin.android)
-                implementation(libs.koin.core)
-                implementation(libs.sqldelight.android)
-                implementation(libs.firebase.bom)
-                implementation(libs.firebase.analytics)
-            }
-        }
-        val androidTest by getting
-
-        /**
-         * IOS
-         * */
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
-
-            dependencies {
-                implementation(libs.ktor.client.ios)
-                implementation(libs.sqldelight.ios)
-            }
-        }
-
-        val iosX64Test by getting
-        val iosArm64Test by getting
-        val iosSimulatorArm64Test by getting
-        val iosTest by creating {
-            dependsOn(commonTest)
-            iosX64Test.dependsOn(this)
-            iosArm64Test.dependsOn(this)
-            iosSimulatorArm64Test.dependsOn(this)
-        }
+    /**
+     * Android
+     * */
+    val androidMain by getting {
+      dependencies {
+        implementation(libs.ktor.client.okhttp)
+        implementation(libs.koin.android)
+        implementation(libs.koin.core)
+        implementation(libs.kotlinx.coroutines.android)
+        implementation(libs.sqldelight.android)
+        implementation(libs.firebase.bom)
+        implementation(libs.firebase.analytics)
+      }
     }
+    val androidTest by getting
+
+    /**
+     * IOS
+     * */
+    val iosX64Main by getting
+    val iosArm64Main by getting
+    val iosSimulatorArm64Main by getting
+    val iosMain by creating {
+      dependsOn(commonMain)
+      iosX64Main.dependsOn(this)
+      iosArm64Main.dependsOn(this)
+      iosSimulatorArm64Main.dependsOn(this)
+
+      dependencies {
+        implementation(libs.ktor.client.ios)
+        implementation(libs.sqldelight.ios)
+      }
+    }
+
+    val iosX64Test by getting
+    val iosArm64Test by getting
+    val iosSimulatorArm64Test by getting
+    val iosTest by creating {
+      dependsOn(commonTest)
+      iosX64Test.dependsOn(this)
+      iosArm64Test.dependsOn(this)
+      iosSimulatorArm64Test.dependsOn(this)
+    }
+  }
 }
 
 android {
-    compileSdk = 32
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = 28
-        targetSdk = 32
-    }
+  compileSdk = 32
+  sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+  defaultConfig {
+    minSdk = 28
+    targetSdk = 32
+  }
 }
 
-the<com.squareup.sqldelight.gradle.SqlDelightExtension>().database(name = "sqldelight") {
-    name = "Database"
+sqldelight {
+  database("ItInterviewDatabase") {
     packageName = "com.hexagonteam.itinterview"
+    sourceFolders = listOf("database")
+  }
 }
 
 dependencies {
-    testImplementation(libs.koin.test)
-    testImplementation(libs.bundles.kotest)
-    testImplementation(libs.junit5)
-    testImplementation(libs.testing)
+  testImplementation(libs.koin.test)
+  testImplementation(libs.bundles.kotest)
+  testImplementation(libs.junit5)
+  testImplementation(libs.testing)
 }

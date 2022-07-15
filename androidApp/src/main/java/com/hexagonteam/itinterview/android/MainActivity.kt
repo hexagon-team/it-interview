@@ -7,12 +7,12 @@ import androidx.compose.material.Text
 import com.hexagonteam.itinterview.android.theme.ItInterviewTheme
 
 class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            ItInterviewTheme {
-                Text(text = "Hello world!")
-            }
-        }
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContent {
+      ItInterviewTheme {
+        Text(text = "Hello world!")
+      }
     }
+  }
 }

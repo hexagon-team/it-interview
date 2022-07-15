@@ -1,10 +1,11 @@
 package com.hexagonteam.itinterview.data.local
 
-import com.hexagonteam.itinterview.database.DatabaseDrivenFactory
+import com.hexagonteam.itinterview.ItInterviewDatabase
 import com.squareup.sqldelight.Transacter
 
-// FIXME: Create instance by koin injections
-class ExampleDao(databaseDrivenFactory: DatabaseDrivenFactory) : Dao(databaseDrivenFactory) {
+internal class ExampleDao(
+  database: ItInterviewDatabase
+) : Dao(database) {
   override val queries: Transacter get() = database.exampleTableQueries
 
   /*

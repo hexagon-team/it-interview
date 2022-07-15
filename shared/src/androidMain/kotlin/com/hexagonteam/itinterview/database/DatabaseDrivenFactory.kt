@@ -5,11 +5,10 @@ import com.hexagonteam.itinterview.ItInterviewDatabase
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 
-actual class DatabaseDrivenFactory(
+internal actual class DatabaseDrivenFactory(
   private val context: Context
 ) {
   actual fun createDriven(): SqlDriver {
-
     return AndroidSqliteDriver(
       schema = ItInterviewDatabase.Schema,
       context = context,

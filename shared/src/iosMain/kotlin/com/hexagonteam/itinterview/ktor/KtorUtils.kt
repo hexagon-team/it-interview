@@ -5,9 +5,9 @@ import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.engine.darwin.*
 
-internal actual fun httpClient(config: HttpClientConfig<*>.() -> Unit): HttpClient = HttpClient(
-  Darwin
-) {
+internal actual fun httpClient(
+  config: HttpClientConfig<*>.() -> Unit
+): HttpClient = HttpClient(Darwin) {
   config(this)
 
   engine {

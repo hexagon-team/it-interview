@@ -28,7 +28,9 @@ android {
 dependencies {
   implementation(project(":shared"))
 
-  implementation(libs.koin.android)
   implementation(libs.bundles.compose)
+  implementation(libs.bundles.jetpack.navigation)
+
+  implementation(libs.koin.android)
   implementation(libs.androidx.appcompat)
 }

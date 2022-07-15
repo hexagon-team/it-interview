@@ -18,6 +18,7 @@ mockk = "1.12.4"
 firebase-bom = "30.1.0"
 firebase-analytics = "21.0.0"
 napier = "2.6.1"
+androidx-navigation = "2.5.0"
 
 [plugins]
 android = { id = "com.android.tools.build", version.ref = "plugin-android" }
@@ -42,9 +43,11 @@ androidx-compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-compose" }
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidx-compose" }
 
+#coroutines
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 
+#json
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
 #ktor
@@ -78,9 +81,17 @@ firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx", ve
 #logger
 napier-logger = { module = "io.github.aakira:napier", version.ref = "napier"}
 
+#android navigaiton
+androidx-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigation"}
+androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "androidx-navigation" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
+
+#ios navigation
+
 [bundles]
 compose = ["androidx-compose-tooling", "androidx-compose-foundation", "androidx-compose-material", "androidx-compose-ui", "activity-compose"]
 ktor = ["ktor-core", "ktor-logging", "ktor-content-negotiation", "ktor-serialization"]
+jetpack-navigation = ["androidx-navigation-ui", "androidx-navigation-testing", "androidx-navigation-compose"]
 kotest = ["kotest-framework", "kotest-assertions"]
 
 [metadata]

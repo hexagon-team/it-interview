@@ -2,6 +2,7 @@ package com.hexagonteam.itinterview.database
 
 import android.content.Context
 import com.hexagonteam.itinterview.ItInterviewDatabase
+import com.hexagonteam.itinterview.database.DatabaseConstants.DB_NAME
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 
@@ -12,7 +13,7 @@ internal actual class DatabaseDrivenFactory(
     return AndroidSqliteDriver(
       schema = ItInterviewDatabase.Schema,
       context = context,
-      name = "it_interview.db",
+      name = DB_NAME,
     )
   }
 }

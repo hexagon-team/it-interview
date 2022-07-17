@@ -14,6 +14,7 @@ plugins {
 }
 
 // TODO: replace to BuildSrc files
+//  https://github.com/hexagon-team/it-interview/issues/10
 kotlin {
   android()
 

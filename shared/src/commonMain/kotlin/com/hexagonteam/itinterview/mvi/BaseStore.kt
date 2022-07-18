@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 /**
- * Base view model, which implements MVI architecture, view model keeps screen state
+ * Base application store, which implements MVI architecture, store keeps screen state
  * inside, and processing ui events.
  * @param State current screen state, single parameter,
  * TODO: Probably class should extend expected class-realization \
  *  of platform-specific view model
  */
-abstract class BaseViewModel<State : UiState> {
+abstract class BaseStore<State : UiState> {
   private val _state by lazy { MutableStateFlow(initialState) }
   private val _effects = Channel<UiEffect>(capacity = 16)
 
@@ -25,10 +25,9 @@ abstract class BaseViewModel<State : UiState> {
   val effects: Flow<UiEffect> get() = _effects.receiveAsFlow()
 
   /**
-   * Single entry point of view model. That function should be invoked, when
+   * Single entry point of store. That function should be invoked, when
    * ui intent to do anything. Method launching and processing events asynchronously
    * via [handleEvent] method invoke.
-   *
    * @param event intent of ui, which should be processed
    */
   fun processEvent(event: UiEvent) {
@@ -36,9 +35,8 @@ abstract class BaseViewModel<State : UiState> {
   }
 
   /**
-   * Single lifecycle method for view model, should be invoked when view model
-   * destroying. Here is view model's scope will be canceled and view model
-   * resources should be recycled.
+   * Single lifecycle method for store, should be invoked when store destroying.
+   * Here is view model's scope will be canceled and view model resources should be recycled.
    * TODO: find out where it will be used
    */
   open fun onCleared() {
